@@ -17,18 +17,52 @@ function printResult($arr) {
     foreach ($arr as $ar) {
       if (is_array($ar)) {
         foreach ($ar as $a) {
-          if ($a != "") echo " $a";
-          else echo " _";
+          if ($a != "") {
+            $a = normalize($a);
+            echo " $a";
+          }
+          else {
+            echo "f";
+          }
         }
         echo "<br/>";
       }
       else {
-        if ($ar != "") echo " $ar";
-        else echo " _";
+        if ($ar != "") {
+          $ar = normalize($ar);
+          echo " $ar";
+        }
+        else {
+          echo "f";
+        }
       }
     }
   }
   else echo $arr;
+}
+
+function normalize($a) {
+  $outs = [
+    "013" =>  "1",
+    "123" =>  "2",
+    "13"  =>  "3",
+    "012" =>  "4",
+    "01"  =>  "5",
+    "12"  =>  "6",
+    "1"   =>  "7",
+    "023" =>  "8",
+    "03"  =>  "9",
+    "23"  =>  "a",
+    "3"   =>  "b",
+    "02"  =>  "c",
+    "0"   =>  "d",
+    "2"   =>  "e"];
+ 
+  $a = str_split($a);
+  $a = array_unique($a);
+  sort($a);
+  $a = implode($a);
+  return $outs[$a];
 }
 
 function vector($current_vector, $v){
