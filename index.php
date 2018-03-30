@@ -1,6 +1,6 @@
 <?php
 
-$file = file_get_contents("2.txt");
+$file = file_get_contents("1.txt");
 $file = explode("\n", $file);
 
 if ($file[count($file)-1] == "") unset($file[count($file)-1]);
@@ -22,7 +22,7 @@ function printResult($arr) {
             echo " $a";
           }
           else {
-            echo "f";
+            echo " f";
           }
         }
         echo "<br/>";
@@ -33,7 +33,7 @@ function printResult($arr) {
           echo " $ar";
         }
         else {
-          echo "f";
+          echo " f";
         }
       }
     }
@@ -42,6 +42,7 @@ function printResult($arr) {
 }
 
 function normalize($a) {
+  // return $a;
   $outs = [
     "013" =>  "1",
     "123" =>  "2",
@@ -73,13 +74,13 @@ function vector($current_vector, $v){
     $v -= 1;
   }
   else if($current_vector=='B') {
-    $v -= 2;
+    $v += 2;
   }
   if($v<0){
-    $v = $v + 4;
+    $v = 3;
   }
   else if($v>3){
-    $v = 0;
+    $v = $v - 4;
   }
   return $v;
 }
@@ -101,7 +102,7 @@ function solve($s, $ln) {
   $w_min = 0;
 
   if (strlen($from) == 2 && strlen($to) == 2) {
-    return "13";
+    return "3";
   }
 
   for ($i=0; $i < strlen($from); $i++) { 
@@ -139,19 +140,23 @@ function solve($s, $ln) {
   $i = 0;
   $j = abs($w_min)-1;
   $vector = 0;
+  $lastVector = 0;
   $st = 0;
+  $lastCell = [$i, $j];
 
   for ($m=0; $m < strlen($from); $m++) { 
+    $lastVector = $vector;
     $vector = vector($from[$m], $vector);
     if ($from[$m] == "R") {
-      $arr[$i][$j] .= vector("B", $vector).vector("L",$vector);
+      $arr[$i][$j] .= vector("L",$vector).vector("B", $vector);
     }
-    elseif ($m > 1 && $from[$m-1] == "W") {
-      $arr[$i][$j] .= vector("L",$vector);
+    if ($m > 0 && $from[$m-1] == "W" && $from[$m] == "W") {
+      $arr[$i][$j] .= vector("L", $lastVector);
     }
     if ($from[$m] == "W" && $m > 0 && $m != strlen($from)-1) {
       // $arr[$i][$j] = $arr[$i][$j]."$st;";
       $st++;
+      $lastCell = [$i, $j];
       if ($vector == 0) $i++;
       elseif ($vector == 1) $j++;
       elseif ($vector == 2) $i--;
@@ -162,12 +167,13 @@ function solve($s, $ln) {
   $vector = vector("B", $vector);
   // echo $vector." ".$i." ".$j;
   for ($m=0; $m < strlen($to); $m++) { 
+    $lastVector = $vector;
     $vector = vector($to[$m], $vector);
     if ($to[$m] == "R") {
       $arr[$i][$j] .= vector("B", $vector).vector("L",$vector);
     }
-    elseif ($m > 1 && $to[$m-1] == "W") {
-      $arr[$i][$j] .= vector("L",$vector);
+    if ($m > 0 && $to[$m-1] == "W" && $to[$m] == "W") {
+      $arr[$i][$j] .= vector("L", $lastVector);
     }
     if ($to[$m] == "W" && $m > 0) {
       if ($vector == 0) $i++;
