@@ -19,10 +19,10 @@ function printResult($arr) {
         foreach ($ar as $a) {
           if ($a != "") {
             $a = normalize($a);
-            echo " $a";
+            echo "$a";
           }
           else {
-            echo " f";
+            echo "f";
           }
         }
         echo "<br/>";
@@ -30,10 +30,10 @@ function printResult($arr) {
       else {
         if ($ar != "") {
           $ar = normalize($ar);
-          echo " $ar";
+          echo "$ar";
         }
         else {
-          echo " f";
+          echo "f";
         }
       }
     }
@@ -86,7 +86,7 @@ function vector($current_vector, $v){
 }
 
 function solve($s, $ln) {
-  echo "<h2>Лабиринт $ln</h2><br>";
+  echo "<br/>Case #$ln:<br>";
   $s = explode(" ", $s);
   $from = trim($s[0]);
   $to = trim($s[1]);
