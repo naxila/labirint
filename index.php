@@ -1,6 +1,6 @@
 <?php
 
-$file = file_get_contents("1.txt");
+$file = file_get_contents("2.txt");
 $file = explode("\n", $file);
 
 if ($file[count($file)-1] == "") unset($file[count($file)-1]);
@@ -9,7 +9,7 @@ unset($file[0]);
 $ln = 0;
 foreach ($file as $s) {
   $ln++;
-  printResult(solve($s, $ln));
+  @printResult(solve($s, $ln));
 }
 
 function printResult($arr) {
@@ -122,6 +122,11 @@ function solve($s, $ln) {
       elseif ($vector == 1) {
         $w++;
         if ($w > $w_max) $w_max = $w;
+      }
+
+      if ($i == strlen($from)-1 && ($vector == 0 || $vector == 2)) {
+        $h_max--;
+        $w_max++;
       }
 
     }
